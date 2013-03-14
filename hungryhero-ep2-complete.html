@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>EaselJS</title>
+    <script type="text/javascript" src="http://code.createjs.com/easeljs-0.6.0.min.js"></script>
+    <script type="text/javascript" src="http://code.createjs.com/tweenjs-0.4.0.min.js"></script>
+    <style type="text/css">
+        body { background-color:#333; }
+        body { margin:0px; } 
+    </style>
+    <script>
+    var stage;
+    var screenWelcome;
+    var bgWelcome;
+    var heroWelcome;
+    var titleWelcome;
+    var playbtnWelcome;
+    var aboutbtnWelcome;
+    
+    function init() { 
+    	var canvas = document.getElementById("canvas");
+		stage = new createjs.Stage(canvas); //## create the stage object using the HTML5 canvas
+        
+        createjs.Ticker.setFPS(60);
+        createjs.Ticker.addListener(window);
+        initWelcomeScreen();
+	}
+    function tick(){
+        stage.update(); //renders canvas
+    }
+    function initWelcomeScreen(){
+        screenWelcome = drawWelcomeScreen();
+        stage.addChild(screenWelcome);
+        createjs.Tween.get(heroWelcome).wait(500).to({x:80},2000).call(function(){
+            screenWelcome.addEventListener("tick",function(){
+                var t = new Date().getTime();
+                heroWelcome.y = 100 + Math.cos(t*0.002) * 25;
+                playbtnWelcome.y = 260 + Math.cos(t*0.002) * 10;
+                aboutbtnWelcome.y = 380 + Math.cos(t*0.002) * 10;
+            });
+        });     
+    }
+    function destroyWelcomeScreen(){
+        stage.removeChild(screenWelcome);
+        screenWelcome.removeAllEventListeners();
+        screenWelcome = null;
+    }
+    function drawWelcomeScreen(){
+        var screen = new createjs.Container(); //in easel, the DisplayObjects used are Container, Bitmap and MovieClip
+        
+        //create all of the assets for Welcome Screen
+        bgWelcome = new createjs.Bitmap("master/media/graphics/bgWelcome.jpg");
+        heroWelcome = new createjs.Bitmap("ep2/assets/graphics/welcome_hero.png");
+        titleWelcome = new createjs.Bitmap("ep2/assets/graphics/welcome_title.png");
+        playbtnWelcome = new createjs.Bitmap("ep2/assets/graphics/welcome_playButton.png");
+        aboutbtnWelcome = new createjs.Bitmap("ep2/assets/graphics/welcome_aboutButton.png");
+        
+        screen.addChild(bgWelcome);
+        
+        titleWelcome.x = 440;
+        titleWelcome.y = 20;
+        screen.addChild(titleWelcome);
+        
+        screen.addChild(heroWelcome);
+        heroWelcome.x = -heroWelcome.image.width; 
+        //## easeljs embeds the image htmlcanvaselement into the bitmap object, 
+        //## which is where we can access standard canvas object properties like width/height.
+        heroWelcome.y = 100;
+        
+        playbtnWelcome.x = 500;
+        playbtnWelcome.y = 260;
+        screen.addChild(playbtnWelcome);
+        
+        aboutbtnWelcome.x = 410;
+        aboutbtnWelcome.y = 380;
+        screen.addChild(aboutbtnWelcome);
+        
+        return screen;
+    }
+    </script>
+</head>
+    
+<body onload="init();">
+    <div class="wrp_canvas">
+		<canvas id="canvas" width="800" height="600"></canvas>
+	</div>
+</body>
+</html>
