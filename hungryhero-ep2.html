@@ -7,8 +7,73 @@
         body { background-color:#333; }
         body { margin:0px; } 
     </style>
+    <script type="text/javascript" src="http://code.createjs.com/easeljs-0.6.0.min.js"></script>
+    <script type="text/javascript" src="http://code.createjs.com/tweenjs-0.4.0.min.js"></script>    
     <script>
-    function init() { }
+    var stage;
+    var bgWelcome;
+    var heroWelcome;
+    var titleWelcome;
+    var playbtnWelcome;
+    var aboutbtnWelcome;
+    var screenWelcome;
+    
+    function init() {
+        var canvas = document.getElementById("canvas");
+        stage = new createjs.Stage(canvas);
+        
+        createjs.Ticker.setFPS(60);
+        createjs.Ticker.addListener(window);
+        initWelcomeScreen();
+    }
+    function tick(){
+        stage.update(); //render canvas
+    }
+    function initWelcomeScreen(){
+        screenWelcome = drawWelcomeScreen();
+        stage.addChild(screenWelcome);
+        createjs.Tween.get(heroWelcome).wait(500).to({x:80},2000).call(function(){
+            screenWelcome.addEventListener("tick",function(){
+                var t = new Date().getTime();
+                heroWelcome.y = 100 + Math.cos(t*0.002) * 25;
+                playbtnWelcome.y = 260 + Math.cos(t*0.002) * 10;
+                aboutbtnWelcome.y = 380 + Math.cos(t*0.002) * 10;
+            });
+        });
+    }
+    function destroyWelcomeScreen(){
+        stage.removeChild(screenWelcome);
+        screenWelcome.removeAllEventListeners();
+        screenWelcome = null;
+    }
+    function drawWelcomeScreen(){
+        var screen = new createjs.Container();
+        bgWelcome = new createjs.Bitmap("assets/graphics/bgWelcome.jpg");
+        heroWelcome = new createjs.Bitmap("assets/graphics/welcome_hero.png");
+        titleWelcome = new createjs.Bitmap("assets/graphics/welcome_title.png");
+        playbtnWelcome = new createjs.Bitmap("assets/graphics/welcome_playButton.png");
+        aboutbtnWelcome = new createjs.Bitmap("assets/graphics/welcome_aboutButton.png");
+        
+        screen.addChild(bgWelcome);
+        
+        titleWelcome.x = 440;
+        titleWelcome.y = 20;
+        screen.addChild(titleWelcome);
+        
+        screen.addChild(heroWelcome);
+        heroWelcome.x = -heroWelcome.image.width;
+        heroWelcome.y = 100;
+        
+        playbtnWelcome.x = 500;
+        playbtnWelcome.y = 260;
+        screen.addChild(playbtnWelcome);
+        
+        aboutbtnWelcome.x = 410;
+        aboutbtnWelcome.y = 380;
+        screen.addChild(aboutbtnWelcome);
+        
+        return screen;
+    }
     </script>
 </head>
     

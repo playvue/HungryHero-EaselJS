@@ -8,7 +8,11 @@
         body { margin:0px; } 
     </style>
     <script>
-    function init() { }
+    var stage;
+    function init() { 
+        var canvas = document.getElementById("canvas");
+    	stage = new createjs.Stage(canvas); //## create the stage object using the HTML5 canvas
+    }
     </script>
 </head>
     

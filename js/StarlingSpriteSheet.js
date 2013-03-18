@@ -6,7 +6,7 @@ function StarlingSpriteSheet(imgPath,xmlPath){
     var tp=xml.getElementsByTagName("TextureAtlas");
     if (!tp) { console.log("TextureAtlas not found"); return null; }
     var textures = tp[0].getElementsByTagName("SubTexture");
-    var images = {};
+    var assets = {};
     var frames = [];
     if (textures.length==0) { console.log("No textures found."); return null; }
     var frmIndex = 0;
@@ -18,21 +18,21 @@ function StarlingSpriteSheet(imgPath,xmlPath){
         var h = t.getAttribute("height");
         var name = t.getAttribute("name");
         frames.push([x,y,w,h]);
-        images[name] = frmIndex;
+        assets[name] = frmIndex;
         frmIndex += 1;
     }
     var animations = {};
-    for (var name in images){
+    for (var name in assets){
         if (name.indexOf('_')>0) {
             var base = name.substring(0,name.indexOf('_'));
             var index = name.substring(base.length+1);
             if (!animations.hasOwnProperty(base) && !isNaN(index)){
-                var tmp_names = Object.keys(images).filter(function(el){ return el.indexOf(base)==0; });
+                var tmp_names = Object.keys(assets).filter(function(el){ return el.indexOf(base)==0; });
                 if (tmp_names.length>0){
                     var fr_anim = [];
                     for (var i=0;i<tmp_names.length;i++){ 
                         var n = tmp_names[i]; 
-                        fr_anim.push(images[n]); }
+                        fr_anim.push(assets[n]); }
                     if (fr_anim.length>0){ 
                         fr_anim.sort(function(a,b){return a-b});
                         animations[base] = { "frames": fr_anim };  }
@@ -40,9 +40,10 @@ function StarlingSpriteSheet(imgPath,xmlPath){
             }
         }
     }
-    for (var prop in animations){ images[prop] = animations[prop]; }
+    for (var prop in animations){ assets[prop] = animations[prop]; }
+    //## actual asset animations originally named using "AssetAnimation_####" will be added as "AssetAnimation"   
     
-    var data = { "frames" : frames, "animations": images, "images":[imgPath]};
+    var data = { "frames" : frames, "animations": assets, "images":[imgPath]};
     var ss = new createjs.SpriteSheet(data);
     return ss;
 }
