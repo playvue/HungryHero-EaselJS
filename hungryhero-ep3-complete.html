@@ -44,7 +44,7 @@
                 case "WELCOME":
                     destroyWelcomeScreen();
                     break;
-                case "GAME":
+                case "INGAME":
                     destroyHero();
                     break;
             }
@@ -53,7 +53,7 @@
                 case "WELCOME":
                     initWelcomeScreen();
                     break;
-                case "GAME":
+                case "INGAME":
                     initHero();
                     break;
             }
@@ -106,10 +106,10 @@
         //create all of the assets for Welcome Screen
         
         bgWelcome = new createjs.Bitmap("assets/graphics/bgWelcome.jpg");
-        heroWelcome = getSpriteSheetBitmap(ss,"welcome_hero");//new createjs.Bitmap("assets/graphics/welcome_hero.png");
-        titleWelcome = getSpriteSheetBitmap(ss,"welcome_title");//new createjs.Bitmap("assets/graphics/welcome_title.png");
-        playbtnWelcome = getSpriteSheetBitmap(ss,"welcome_playButton");//new createjs.Bitmap("assets/graphics/welcome_playButton.png");
-        aboutbtnWelcome = getSpriteSheetBitmap(ss,"welcome_aboutButton");//new createjs.Bitmap("assets/graphics/welcome_aboutButton.png");
+        heroWelcome = getSpriteSheetBitmap(ss,"welcome_hero");
+        titleWelcome = getSpriteSheetBitmap(ss,"welcome_title");
+        playbtnWelcome = getSpriteSheetBitmap(ss,"welcome_playButton");
+        aboutbtnWelcome = getSpriteSheetBitmap(ss,"welcome_aboutButton");
         
         screen.addChild(bgWelcome);
         
@@ -125,7 +125,7 @@
         
         playbtnWelcome.x = 500;
         playbtnWelcome.y = 260;
-        playbtnWelcome.addEventListener("click",function(){ nextState = "GAME"; })
+        playbtnWelcome.addEventListener("click",function(){ nextState = "INGAME"; })
         screen.addChild(playbtnWelcome);
         
         aboutbtnWelcome.x = 410;
